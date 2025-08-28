@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use cargo_edit::{LocalManifest, shell_status, shell_warn, upgrade_requirement};
 use clap::Args;
 
-use crate::errors::*;
+use crate::errors::CargoResult;
 use crate::version::BumpLevel;
 use crate::version::TargetVersion;
 
@@ -12,7 +12,7 @@ use crate::version::TargetVersion;
 #[derive(Debug, Args)]
 #[command(version)]
 #[command(group = clap::ArgGroup::new("ver").multiple(false))]
-pub struct VersionArgs {
+pub(crate) struct VersionArgs {
     /// Version to change manifests to
     #[arg(group = "ver")]
     target: Option<semver::Version>,
@@ -77,7 +77,7 @@ pub struct VersionArgs {
 }
 
 impl VersionArgs {
-    pub fn exec(self) -> CargoResult<()> {
+    pub(crate) fn exec(self) -> CargoResult<()> {
         exec(self)
     }
 }
@@ -229,7 +229,7 @@ fn exec(args: VersionArgs) -> CargoResult<()> {
                 &root_manifest_path,
                 &workspace_members,
                 dry_run,
-            )?
+            )?;
         }
     }
 

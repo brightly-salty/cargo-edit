@@ -16,7 +16,7 @@ Examples:
 #[command(override_usage = "\
        cargo add [OPTIONS] <DEP>[@<VERSION>] [+<FEATURE>,...] ...
        cargo add [OPTIONS] <DEP_PATH> [+<FEATURE>,...] ...")]
-pub struct AddArgs {
+pub(crate) struct AddArgs {
     /// Reference to a package to add as a dependency
     ///
     /// You can reference a packages by:{n}
@@ -146,7 +146,7 @@ pub struct AddArgs {
 }
 
 impl AddArgs {
-    pub fn exec(self) -> CargoResult<()> {
+    pub(crate) fn exec(self) -> CargoResult<()> {
         anyhow::bail!(
             "`cargo add` has been merged into cargo 1.62+ as of cargo-edit 0.10, either
 - Upgrade cargo, like with `rustup update`

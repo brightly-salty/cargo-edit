@@ -17,7 +17,7 @@ use termcolor::{Color, ColorSpec};
 /// Upgrade dependency version requirements in Cargo.toml manifest files
 #[derive(Debug, Args)]
 #[command(version)]
-pub struct UpgradeArgs {
+pub(crate) struct UpgradeArgs {
     /// Print changes to be made without making them.
     #[arg(long, short = 'n')]
     dry_run: bool,
@@ -112,7 +112,7 @@ pub struct UpgradeArgs {
 }
 
 impl UpgradeArgs {
-    pub fn exec(self) -> CargoResult<()> {
+    pub(crate) fn exec(self) -> CargoResult<()> {
         exec(self)
     }
 
@@ -359,7 +359,7 @@ fn exec(args: UpgradeArgs) -> CargoResult<()> {
                         reason.get_or_insert(Reason::Pinned);
                         pinned_present = true;
                     } else {
-                        new_version_req = Some(explicit_version_req.to_owned())
+                        new_version_req = Some(explicit_version_req.to_owned());
                     }
                 }
 

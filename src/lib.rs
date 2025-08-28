@@ -34,9 +34,11 @@ mod version;
 
 pub use crate_spec::CrateSpec;
 pub use dependency::Dependency;
+pub use dependency::GitSource;
 pub use dependency::PathSource;
 pub use dependency::RegistrySource;
 pub use dependency::Source;
+pub use dependency::WorkspaceSource;
 pub use errors::*;
 pub use fetch::{RustVersion, find_compatible_version, find_latest_version};
 pub use index::*;

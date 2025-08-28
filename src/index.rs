@@ -3,7 +3,7 @@ use tame_index::utils::flock::FileLock;
 
 use url::Url;
 
-use super::errors::*;
+use super::errors::{CargoResult, Context};
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum CertsSource {

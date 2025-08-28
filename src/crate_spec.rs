@@ -1,5 +1,5 @@
 //! Crate name parsing.
-use super::errors::*;
+use super::errors::{CargoResult, Context, Error};
 
 /// User-specified crate
 ///

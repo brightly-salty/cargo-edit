@@ -5,11 +5,11 @@ use std::{env, str};
 
 use semver::Version;
 
-use super::errors::*;
+use super::errors::{CargoResult, Context, non_existent_dependency_err, non_existent_table_err};
 use super::metadata::find_manifest_path;
 
 #[derive(PartialEq, Eq, Hash, Ord, PartialOrd, Clone, Debug, Copy)]
-pub enum DepKind {
+pub(crate) enum DepKind {
     Normal,
     Development,
     Build,
@@ -17,7 +17,7 @@ pub enum DepKind {
 
 /// Dependency table to add dep to
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct DepTable {
+pub(crate) struct DepTable {
     kind: DepKind,
     target: Option<String>,
 }
@@ -103,7 +103,7 @@ impl Manifest {
                 .map(|t| t.is_table_like())
                 .unwrap_or(false)
             {
-                sections.push((table.clone(), self.data[dependency_type].clone()))
+                sections.push((table.clone(), self.data[dependency_type].clone()));
             }
 
             // ... and in `target.<target>.(build-/dev-)dependencies`.
@@ -505,6 +505,6 @@ fn overwrite_value(item: &mut toml_edit::Item, value: impl Into<toml_edit::Value
     *item = toml_edit::Item::Value(value);
 }
 
-pub fn str_or_1_len_table(item: &toml_edit::Item) -> bool {
+pub(crate) fn str_or_1_len_table(item: &toml_edit::Item) -> bool {
     item.is_str() || item.as_table_like().map(|t| t.len() == 1).unwrap_or(false)
 }

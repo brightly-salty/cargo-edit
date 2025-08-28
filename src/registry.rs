@@ -1,4 +1,4 @@
-use super::errors::*;
+use super::errors::{CargoResult, Context};
 use std::collections::HashMap;
 use std::path::Path;
 use url::Url;
@@ -68,7 +68,7 @@ pub fn registry_url(manifest_path: &Path, registry: Option<&str>) -> CargoResult
             let mut source = registries.remove(CRATES_IO_REGISTRY).unwrap_or_default();
             source
                 .registry
-                .get_or_insert_with(|| CRATES_IO_INDEX.to_string());
+                .get_or_insert_with(|| CRATES_IO_INDEX.to_owned());
             source
         }
         Some(r) => registries
@@ -85,7 +85,7 @@ pub fn registry_url(manifest_path: &Path, registry: Option<&str>) -> CargoResult
         if is_crates_io {
             source
                 .registry
-                .get_or_insert_with(|| CRATES_IO_INDEX.to_string());
+                .get_or_insert_with(|| CRATES_IO_INDEX.to_owned());
         }
     }
 
@@ -122,7 +122,7 @@ mod code_from_cargo {
     #![allow(dead_code)]
 
     #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub enum Kind {
+    pub(super) enum Kind {
         Git(GitReference),
         Path,
         Registry,
@@ -131,7 +131,7 @@ mod code_from_cargo {
     }
 
     #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub enum GitReference {
+    pub(super) enum GitReference {
         Tag(String),
         Branch(String),
         Rev(String),
