@@ -2,16 +2,16 @@ use std::str::FromStr;
 
 use cargo_edit::VersionExt;
 
-use crate::errors::*;
+use crate::errors::{CargoResult, version_downgrade_err};
 
 #[derive(Clone, Debug)]
-pub enum TargetVersion {
+pub(crate) enum TargetVersion {
     Relative(BumpLevel),
     Absolute(semver::Version),
 }
 
 impl TargetVersion {
-    pub fn bump(
+    pub(crate) fn bump(
         &self,
         current: &semver::Version,
         metadata: Option<&str>,
@@ -56,7 +56,7 @@ impl Default for TargetVersion {
 }
 
 #[derive(Debug, Clone, Copy)]
-pub enum BumpLevel {
+pub(crate) enum BumpLevel {
     Major,
     Minor,
     Patch,
@@ -87,7 +87,7 @@ impl FromStr for BumpLevel {
 }
 
 impl BumpLevel {
-    pub fn bump_version(
+    pub(crate) fn bump_version(
         self,
         version: &mut semver::Version,
         metadata: Option<&str>,

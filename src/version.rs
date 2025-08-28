@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use super::errors::*;
+use super::errors::{CargoResult, invalid_release_level, unsupported_version_req};
 
 /// Additional version functionality
 pub trait VersionExt {
@@ -143,7 +143,7 @@ fn prerelease_id_version(version: &semver::Version) -> CargoResult<Option<(Strin
 
 /// Upgrade an existing requirement to a new version
 pub fn upgrade_requirement(req: &str, version: &semver::Version) -> CargoResult<Option<String>> {
-    let req_text = req.to_string();
+    let req_text = req.to_owned();
     let raw_req = semver::VersionReq::parse(&req_text)
         .expect("semver to generate valid version requirements");
     if raw_req.comparators.is_empty() {
@@ -167,7 +167,7 @@ pub fn upgrade_requirement(req: &str, version: &semver::Version) -> CargoResult<
             assert!(
                 new_req.matches(version),
                 "Invalid req created: {new_req_text}"
-            )
+            );
         }
         if new_req_text == req_text {
             Ok(None)

@@ -1,4 +1,4 @@
-use super::errors::*;
+use super::errors::{CargoResult, Context};
 use cargo_metadata::Package;
 use std::path::Path;
 

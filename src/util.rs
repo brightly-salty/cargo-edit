@@ -15,7 +15,7 @@ pub fn colorize_stderr() -> ColorChoice {
 }
 
 /// Whether to color logged output
-pub fn colorize_stdout() -> ColorChoice {
+pub(crate) fn colorize_stdout() -> ColorChoice {
     if concolor_control::get(concolor_control::Stream::Stdout).color() {
         ColorChoice::Always
     } else {

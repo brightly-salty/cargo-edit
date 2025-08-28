@@ -5,7 +5,7 @@ use std::path::PathBuf;
 /// Remove a dependency from a Cargo.toml manifest file.
 #[derive(Debug, Args)]
 #[command(version)]
-pub struct RmArgs {
+pub(crate) struct RmArgs {
     /// Dependencies to be removed
     #[arg(value_name = "DEP_ID", required = true)]
     crates: Vec<String>,
@@ -44,7 +44,7 @@ pub struct RmArgs {
 }
 
 impl RmArgs {
-    pub fn exec(&self) -> CargoResult<()> {
+    pub(crate) fn exec(&self) -> CargoResult<()> {
         anyhow::bail!(
             "`cargo rm` has been merged into cargo 1.66+ as of cargo-edit 0.12, either
 - Upgrade cargo, like with `rustup update`

@@ -363,10 +363,10 @@ impl Dependency {
                     }
                     None => {}
                 }
-                if table.contains_key("version") {
-                    if let Some(r) = self.registry.as_deref() {
-                        table.insert("registry", r.into());
-                    }
+                if table.contains_key("version")
+                    && let Some(r) = self.registry.as_deref()
+                {
+                    table.insert("registry", r.into());
                 }
 
                 if self.rename.is_some() {
@@ -391,7 +391,7 @@ impl Dependency {
     }
 
     /// Modify existing entry to match this dependency
-    pub fn update_toml(&self, crate_root: &Path, key: &mut KeyMut, item: &mut toml_edit::Item) {
+    pub fn update_toml(&self, crate_root: &Path, key: &mut KeyMut<'_>, item: &mut toml_edit::Item) {
         if str_or_1_len_table(item) {
             // Nothing to preserve
             *item = self.to_toml(crate_root);
