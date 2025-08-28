@@ -363,10 +363,10 @@ impl Dependency {
                     }
                     None => {}
                 }
-                if table.contains_key("version") {
-                    if let Some(r) = self.registry.as_deref() {
-                        table.insert("registry", r.into());
-                    }
+                if table.contains_key("version")
+                    && let Some(r) = self.registry.as_deref()
+                {
+                    table.insert("registry", r.into());
                 }
 
                 if self.rename.is_some() {

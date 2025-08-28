@@ -179,20 +179,20 @@ fn exec(args: VersionArgs) -> CargoResult<()> {
 
     if update_workspace_version {
         let mut ws_manifest = LocalManifest::try_new(&root_manifest_path)?;
-        if let Some(current) = ws_manifest.get_workspace_version() {
-            if let Some(next) = target.bump(&current, metadata.as_deref())? {
-                shell_status(
-                    "Upgrading",
-                    &format!("workspace version from {current} to {next}"),
-                )?;
-                ws_manifest.set_workspace_version(&next);
-                changed = true;
-                if !dry_run {
-                    ws_manifest.write()?;
-                }
-
-                // Deferring `update_dependents` to the per-package logic
+        if let Some(current) = ws_manifest.get_workspace_version()
+            && let Some(next) = target.bump(&current, metadata.as_deref())?
+        {
+            shell_status(
+                "Upgrading",
+                &format!("workspace version from {current} to {next}"),
+            )?;
+            ws_manifest.set_workspace_version(&next);
+            changed = true;
+            if !dry_run {
+                ws_manifest.write()?;
             }
+
+            // Deferring `update_dependents` to the per-package logic
         }
     }
 
